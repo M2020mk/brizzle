@@ -1,0 +1,60 @@
+---
+id: intro
+title: Getting Started
+sidebar_position: 1
+slug: /
+---
+
+# nextjs-drizzle-gen
+
+Rails-like generators for Next.js + Drizzle ORM projects. Generate models, server actions, CRUD pages, and API routes with a single command.
+
+## Quick Start
+
+```bash
+# Generate a full CRUD scaffold (model + actions + pages)
+drizzle-gen scaffold post title:string body:text published:boolean
+
+# Generate just model and actions (no views)
+drizzle-gen resource user name:string email:string:unique
+
+# Generate model and REST API routes
+drizzle-gen api product name:string price:float
+
+# Generate only a model
+drizzle-gen model comment content:text authorId:references:user
+
+# Generate only actions for an existing model
+drizzle-gen actions post
+```
+
+## What Gets Generated
+
+When you run `drizzle-gen scaffold post title:string body:text published:boolean`, you get:
+
+```
+db/schema.ts          # Drizzle model definition
+app/posts/
+├── actions.ts        # Server actions (CRUD operations)
+├── page.tsx          # List page
+├── new/page.tsx      # Create form
+├── [id]/page.tsx     # Detail view
+└── [id]/edit/page.tsx # Edit form
+```
+
+## Requirements
+
+- Node.js >= 18
+- Next.js project with App Router
+- Drizzle ORM configured
+
+## Auto-Detection
+
+The generator automatically detects your project configuration:
+
+- **Project structure**: `src/app/` vs `app/`
+- **Path aliases**: Reads from `tsconfig.json` (`@/`, `~/`, etc.)
+- **Database dialect**: Reads from `drizzle.config.ts` (SQLite, PostgreSQL, MySQL)
+- **DB location**: Checks `db/`, `lib/db/`, `server/db/`
+
+Run `drizzle-gen config` to see detected settings.

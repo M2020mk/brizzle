@@ -24,7 +24,9 @@
     "dev": "tsup --watch",
     "test": "vitest",
     "test:run": "vitest run",
-    "prepublishOnly": "npm run build && npm run test:run"
+    "prepublishOnly": "npm run build && npm run test:run",
+    "docs:dev": "cd docs && npm run start",
+    "docs:build": "cd docs && npm run build"
   },
   "keywords": [
     "nextjs",
