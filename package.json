@@ -1,0 +1,52 @@
+{
+  "name": "nextjs-drizzle-gen",
+  "version": "0.1.0",
+  "description": "Rails-like generators for Next.js + Drizzle ORM projects",
+  "type": "module",
+  "bin": {
+    "drizzle-gen": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "prepublishOnly": "npm run build && npm run test:run"
+  },
+  "keywords": [
+    "nextjs",
+    "drizzle",
+    "orm",
+    "generator",
+    "scaffold",
+    "cli",
+    "codegen"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^14.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsup": "^8",
+    "typescript": "^5",
+    "vitest": "^4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
