@@ -151,6 +151,29 @@ describe("singularize", () => {
     expect(singularize("classes")).toBe("class");
     expect(singularize("boxes")).toBe("box");
     expect(singularize("watches")).toBe("watch");
+    expect(singularize("wishes")).toBe("wish");
+    expect(singularize("addresses")).toBe("address");
+  });
+
+  it("handles irregular plurals ending in single 's' + 'es'", () => {
+    expect(singularize("statuses")).toBe("status");
+    expect(singularize("buses")).toBe("bus");
+    expect(singularize("campuses")).toBe("campus");
+    expect(singularize("focuses")).toBe("focus");
+    expect(singularize("aliases")).toBe("alias");
+  });
+
+  it("handles words where 'es' is part of the base word", () => {
+    expect(singularize("cases")).toBe("case");
+    expect(singularize("names")).toBe("name");
+  });
+
+  it("handles uncountable and irregular words", () => {
+    expect(singularize("series")).toBe("series");
+    expect(singularize("species")).toBe("species");
+    expect(singularize("media")).toBe("media");
+    expect(singularize("data")).toBe("datum");
+    expect(singularize("criteria")).toBe("criterion");
   });
 
   it("doesn't modify words ending in 'ss'", () => {

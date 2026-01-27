@@ -12,6 +12,7 @@ import {
   validateModelName,
   createModelContext,
   modelExistsInSchema,
+  removeModelFromSchemaContent,
   detectDialect,
   getDrizzleImport,
   getTableFunction,
@@ -40,16 +41,14 @@ export function generateModel(name: string, fieldArgs: string[], options: Genera
 
   const schemaPath = path.join(getDbPath(), "schema.ts");
 
-  if (fileExists(schemaPath) && !modelExistsInSchema(ctx.tableName)) {
-    appendToSchema(schemaPath, ctx.camelPlural, ctx.tableName, fields, dialect, options);
-  } else if (!fileExists(schemaPath)) {
+  if (!fileExists(schemaPath)) {
     const schemaContent = generateSchemaContent(ctx.camelPlural, ctx.tableName, fields, dialect, options);
     writeFile(schemaPath, schemaContent, options);
+  } else if (modelExistsInSchema(ctx.tableName)) {
+    // Model exists and --force was used — replace it
+    replaceInSchema(schemaPath, ctx.camelPlural, ctx.tableName, fields, dialect, options);
   } else {
-    // Model exists and --force was used, need to warn user
-    throw new Error(
-      `Cannot regenerate model "${ctx.pascalName}" - manual removal from schema required.`
-    );
+    appendToSchema(schemaPath, ctx.camelPlural, ctx.tableName, fields, dialect, options);
   }
 }
 
@@ -100,7 +99,7 @@ function generateTableDefinition(
   const tableFunction = getTableFunction(dialect);
   const idColumn = getIdColumn(dialect, options.uuid);
   const timestampColumns = getTimestampColumns(dialect, options.noTimestamps);
-  const fieldDefinitions = generateFieldDefinitions(fields, dialect);
+  const fieldDefinitions = generateFieldDefinitions(fields, dialect, options);
 
   // Build table content
   const lines = [`  ${idColumn},`];
@@ -116,7 +115,7 @@ ${lines.join("\n")}
 });`;
 }
 
-function generateFieldDefinitions(fields: Field[], dialect: Dialect): string {
+function generateFieldDefinitions(fields: Field[], dialect: Dialect, options: GeneratorOptions = {}): string {
   return fields
     .map((field) => {
       const columnName = toSnakeCase(field.name);
@@ -130,8 +129,8 @@ function generateFieldDefinitions(fields: Field[], dialect: Dialect): string {
       const drizzleTypeDef = drizzleType(field, dialect);
 
       if (field.isReference && field.referenceTo) {
-        const intType = dialect === "mysql" ? "int" : "integer";
-        return `  ${field.name}: ${intType}("${columnName}").references(() => ${toCamelCase(pluralize(field.referenceTo))}.id)${modifiers},`;
+        const refTarget = `${toCamelCase(pluralize(field.referenceTo))}.id`;
+        return `  ${field.name}: ${getReferenceType(dialect, columnName, options.uuid)}.references(() => ${refTarget})${modifiers},`;
       }
 
       // MySQL varchar needs length option
@@ -164,6 +163,26 @@ function getFieldModifiers(field: Field): string {
   }
 
   return modifiers.join("");
+}
+
+function getReferenceType(dialect: Dialect, columnName: string, useUuid = false): string {
+  if (useUuid) {
+    switch (dialect) {
+      case "postgresql":
+        return `uuid("${columnName}")`;
+      case "mysql":
+        return `varchar("${columnName}", { length: 36 })`;
+      default:
+        return `text("${columnName}")`;
+    }
+  }
+
+  switch (dialect) {
+    case "mysql":
+      return `int("${columnName}")`;
+    default:
+      return `integer("${columnName}")`;
+  }
 }
 
 function generateEnumField(field: Field, columnName: string, dialect: Dialect): string {
@@ -199,6 +218,23 @@ function appendToSchema(
   const enumDefinitions = generateEnumDefinitions(fields, dialect);
   const tableDefinition = generateTableDefinition(modelName, tableName, fields, dialect, options);
   const newContent = existingContent + enumDefinitions + "\n" + tableDefinition + "\n";
+
+  writeFile(schemaPath, newContent, { force: true, dryRun: options.dryRun });
+}
+
+function replaceInSchema(
+  schemaPath: string,
+  modelName: string,
+  tableName: string,
+  fields: Field[],
+  dialect: Dialect,
+  options: GeneratorOptions
+): void {
+  const existingContent = readFile(schemaPath);
+  const cleanedContent = removeModelFromSchemaContent(existingContent, tableName);
+  const enumDefinitions = generateEnumDefinitions(fields, dialect);
+  const tableDefinition = generateTableDefinition(modelName, tableName, fields, dialect, options);
+  const newContent = cleanedContent.trimEnd() + "\n" + enumDefinitions + "\n" + tableDefinition + "\n";
 
   writeFile(schemaPath, newContent, { force: true, dryRun: options.dryRun });
 }

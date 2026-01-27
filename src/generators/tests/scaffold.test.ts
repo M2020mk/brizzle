@@ -127,6 +127,15 @@ describe("generateScaffold", () => {
       expect(showPage).toContain("{post.body}");
       expect(showPage).toContain("createdAt.toLocaleString()");
     });
+
+    it("omits createdAt display when noTimestamps is set", () => {
+      generateScaffold("post", ["title:string"], { noTimestamps: true });
+
+      const showPage = getWrittenFile("posts/[id]/page.tsx");
+
+      expect(showPage).not.toContain("createdAt");
+      expect(showPage).toContain("{post.title}");
+    });
   });
 
   describe("edit page", () => {

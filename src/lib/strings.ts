@@ -1,3 +1,4 @@
+import pluralizeLib from "pluralize";
 import type { ModelContext } from "./types";
 
 export function toPascalCase(str: string): string {
@@ -27,26 +28,11 @@ export function escapeString(str: string): string {
 }
 
 export function pluralize(str: string): string {
-  if (str.endsWith("y") && !/[aeiou]y$/.test(str)) {
-    return str.slice(0, -1) + "ies";
-  }
-  if (str.endsWith("s") || str.endsWith("x") || str.endsWith("ch") || str.endsWith("sh")) {
-    return str + "es";
-  }
-  return str + "s";
+  return pluralizeLib.plural(str);
 }
 
 export function singularize(str: string): string {
-  if (str.endsWith("ies")) {
-    return str.slice(0, -3) + "y";
-  }
-  if (str.endsWith("es") && (str.endsWith("xes") || str.endsWith("ches") || str.endsWith("shes") || str.endsWith("sses"))) {
-    return str.slice(0, -2);
-  }
-  if (str.endsWith("s") && !str.endsWith("ss")) {
-    return str.slice(0, -1);
-  }
-  return str;
+  return pluralizeLib.singular(str);
 }
 
 export function createModelContext(name: string): ModelContext {

@@ -71,5 +71,27 @@ export function validateFieldDefinition(fieldDef: string): void {
         `Enum field "${name}" requires values. Example: ${name}:enum:draft,published,archived`
       );
     }
+
+    const values = enumValues.split(",");
+
+    for (const value of values) {
+      if (!value) {
+        throw new Error(
+          `Enum field "${name}" has an empty value. Values must not be empty.`
+        );
+      }
+      if (!/^[a-zA-Z][a-zA-Z0-9_-]*$/.test(value)) {
+        throw new Error(
+          `Invalid enum value "${value}" for field "${name}". Values must start with a letter and contain only letters, numbers, underscores, or hyphens.`
+        );
+      }
+    }
+
+    const unique = new Set(values);
+    if (unique.size !== values.length) {
+      throw new Error(
+        `Enum field "${name}" has duplicate values.`
+      );
+    }
   }
 }

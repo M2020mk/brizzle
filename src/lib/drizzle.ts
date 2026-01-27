@@ -191,9 +191,9 @@ export function getRequiredImports(fields: Field[], dialect: Dialect, options: G
     types.add(baseType);
   }
 
-  // Add text as it's commonly needed (except MySQL uses varchar for strings)
-  // SQLite also needs text for enums
-  if (dialect !== "mysql") {
+  // SQLite enums use text() with enum option, but enum fields are skipped
+  // in the loop above, so add text explicitly when needed
+  if (dialect === "sqlite" && hasEnums) {
     types.add("text");
   }
 

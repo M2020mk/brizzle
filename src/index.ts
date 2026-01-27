@@ -169,18 +169,19 @@ program
     brizzle destroy scaffold post
     brizzle d api product --dry-run`
   )
+  .option("-f, --force", "Skip confirmation prompt")
   .option("-n, --dry-run", "Preview changes without deleting files")
-  .action((type: string, name: string, opts: CommandOptions) => {
+  .action(async (type: string, name: string, opts: CommandOptions) => {
     try {
       switch (type) {
         case "scaffold":
-          destroyScaffold(name, opts);
+          await destroyScaffold(name, opts);
           break;
         case "resource":
-          destroyResource(name, opts);
+          await destroyResource(name, opts);
           break;
         case "api":
-          destroyApi(name, opts);
+          await destroyApi(name, opts);
           break;
         default:
           throw new Error(`Unknown type "${type}". Use: scaffold, resource, or api`);

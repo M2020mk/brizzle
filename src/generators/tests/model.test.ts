@@ -184,13 +184,9 @@ describe("generateModel", () => {
       expect(content).toContain('status: text("status", { enum: ["draft", "published", "archived"] })');
     });
 
-    it("escapes quotes in enum values", () => {
-      generateModel("post", ['status:enum:draft,say "hi",published']);
-
-      const writeCall = vi.mocked(fs.writeFileSync).mock.calls[0];
-      const content = writeCall[1] as string;
-
-      expect(content).toContain('say \\"hi\\"');
+    it("rejects enum values with invalid characters", () => {
+      expect(() => generateModel("post", ['status:enum:draft,say "hi",published'])).toThrow("Invalid enum value");
+      expect(() => generateModel("post", ["status:enum:draft,foo bar"])).toThrow("Invalid enum value");
     });
   });
 
@@ -202,6 +198,16 @@ describe("generateModel", () => {
       const content = writeCall[1] as string;
 
       expect(content).toContain('authorId: integer("author_id").references(() => users.id)');
+    });
+
+    it("uses text type for references when uuid option is set", () => {
+      generateModel("post", ["authorId:references:user"], { uuid: true });
+
+      const writeCall = vi.mocked(fs.writeFileSync).mock.calls[0];
+      const content = writeCall[1] as string;
+
+      expect(content).toContain('authorId: text("author_id").references(() => users.id)');
+      expect(content).not.toContain('integer("author_id")');
     });
   });
 
@@ -257,6 +263,68 @@ export const posts = sqliteTable("posts", {
       // Should contain both existing and new table
       expect(content).toContain('sqliteTable("posts"');
       expect(content).toContain('sqliteTable("users"');
+    });
+  });
+
+  describe("force replacing existing model", () => {
+    it("replaces existing model with --force", () => {
+      const existingSchema = `import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+
+export const users = sqliteTable("users", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("name").notNull(),
+});
+`;
+      vi.mocked(fs.existsSync).mockImplementation((p) => {
+        return String(p).includes("schema.ts");
+      });
+      vi.mocked(fs.readFileSync).mockReturnValue(existingSchema);
+
+      generateModel("user", ["name:string", "email:string"], { force: true });
+
+      const writeCall = vi.mocked(fs.writeFileSync).mock.calls[0];
+      const content = writeCall[1] as string;
+
+      // Should contain the new field
+      expect(content).toContain('email: text("email").notNull()');
+      // Should still have the table
+      expect(content).toContain('sqliteTable("users"');
+      // Should not have duplicate table definitions
+      const matches = content.match(/sqliteTable\("users"/g);
+      expect(matches).toHaveLength(1);
+    });
+
+    it("preserves other models when replacing with --force", () => {
+      const existingSchema = `import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+
+export const posts = sqliteTable("posts", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  title: text("title").notNull(),
+});
+
+export const users = sqliteTable("users", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("name").notNull(),
+});
+`;
+      vi.mocked(fs.existsSync).mockImplementation((p) => {
+        return String(p).includes("schema.ts");
+      });
+      vi.mocked(fs.readFileSync).mockReturnValue(existingSchema);
+
+      generateModel("user", ["name:string", "email:string"], { force: true });
+
+      const writeCall = vi.mocked(fs.writeFileSync).mock.calls[0];
+      const content = writeCall[1] as string;
+
+      // Should preserve the posts table
+      expect(content).toContain('sqliteTable("posts"');
+      // Should have the updated users table with email
+      expect(content).toContain('sqliteTable("users"');
+      expect(content).toContain('email: text("email").notNull()');
+      // No duplicates
+      const matches = content.match(/sqliteTable\("users"/g);
+      expect(matches).toHaveLength(1);
     });
   });
 });

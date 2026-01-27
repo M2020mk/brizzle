@@ -245,11 +245,15 @@ ${fields
           <dd className="mt-1 text-gray-900">{${camelName}.${f.name}}</dd>
         </div>`
       )
-      .join("\n")}
+      .join("\n")}${
+    options.noTimestamps
+      ? ""
+      : `
         <div className="py-3">
           <dt className="text-sm text-gray-500">Created At</dt>
           <dd className="mt-1 text-gray-900">{${camelName}.createdAt.toLocaleString()}</dd>
-        </div>
+        </div>`
+  }
       </dl>
     </div>
   );

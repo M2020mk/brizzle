@@ -51,4 +51,5 @@ export {
   fileExists,
   readFile,
   modelExistsInSchema,
+  removeModelFromSchemaContent,
 } from "./files";

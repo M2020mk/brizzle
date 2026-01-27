@@ -72,6 +72,26 @@ describe("validateFieldDefinition", () => {
     expect(() => validateFieldDefinition("status:enum")).toThrow("requires values");
   });
 
+  it("accepts valid enum values", () => {
+    expect(() => validateFieldDefinition("status:enum:draft,published,archived")).not.toThrow();
+    expect(() => validateFieldDefinition("role:enum:admin,super-admin,power_user")).not.toThrow();
+  });
+
+  it("rejects empty enum values", () => {
+    expect(() => validateFieldDefinition("status:enum:draft,,published")).toThrow("empty value");
+    expect(() => validateFieldDefinition("status:enum:,draft")).toThrow("empty value");
+  });
+
+  it("rejects enum values with invalid characters", () => {
+    expect(() => validateFieldDefinition("status:enum:foo bar,baz")).toThrow("Invalid enum value");
+    expect(() => validateFieldDefinition("status:enum:ok,bad!")).toThrow("Invalid enum value");
+    expect(() => validateFieldDefinition("status:enum:123,abc")).toThrow("Invalid enum value");
+  });
+
+  it("rejects duplicate enum values", () => {
+    expect(() => validateFieldDefinition("status:enum:draft,draft,published")).toThrow("duplicate values");
+  });
+
   it("rejects SQL reserved words as field names", () => {
     expect(() => validateFieldDefinition("select:string")).toThrow("SQL reserved word");
     expect(() => validateFieldDefinition("from:string")).toThrow("SQL reserved word");

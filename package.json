@@ -50,10 +50,12 @@
   "homepage": "https://github.com/mantaskaveckas/brizzle#readme",
   "dependencies": {
     "@clack/prompts": "^0.10.0",
-    "commander": "^14.0.2"
+    "commander": "^14.0.2",
+    "pluralize": "^8.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/pluralize": "^0.0.33",
     "tsup": "^8",
     "typescript": "^5",
     "vitest": "^4"
