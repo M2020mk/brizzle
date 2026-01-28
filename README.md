@@ -181,6 +181,24 @@ Next steps:
 - Next.js project with App Router
 - Drizzle ORM configured
 
+## Roadmap
+
+- [ ] **Drizzle init** - `brizzle init` to set up Drizzle ORM, database config, and db connection
+- [ ] **Authentication** - `brizzle auth` to generate [better-auth](https://www.better-auth.com/) setup with user model and sign-in/sign-up pages
+- [ ] **Zod schemas** - Generate validation schemas for forms and API routes
+- [ ] **Indexes** - Support for `name:string:index` field modifier
+- [ ] **Default values** - Support for `status:string:default:active`
+- [ ] **Soft deletes** - Add `--soft-delete` flag for `deletedAt` timestamp
+- [ ] **Pagination** - Add pagination to list pages and API routes
+- [ ] **Search & filtering** - Generate search/filter UI for list pages
+- [ ] **Seed generator** - `brizzle seed <model>` to generate seed data files
+- [ ] **Relations helper** - Better syntax for has-many/belongs-to relationships
+- [ ] **Custom templates** - Allow overriding templates via `.brizzle/` directory
+- [ ] **Interactive mode** - `brizzle new` wizard for step-by-step model creation
+- [ ] **Import cleanup** - Remove unused imports when destroying models
+
+Have a feature request? [Open an issue](https://github.com/mantaskaveckas/brizzle/issues)
+
 ## License
 
 MIT
