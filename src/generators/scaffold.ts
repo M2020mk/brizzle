@@ -85,31 +85,31 @@ export default async function ${pascalPlural}Page() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
       <div className="mb-10 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-gray-900">${pascalPlural}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">${pascalPlural}</h1>
         <Link
           href="/${kebabPlural}/new"
-          className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800"
+          className="flex h-10 items-center rounded-full bg-zinc-900 px-4 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
         >
           New ${pascalName}
         </Link>
       </div>
 
       {${camelName}s.length === 0 ? (
-        <p className="text-gray-500">No ${camelName}s yet.</p>
+        <p className="text-zinc-500 dark:text-zinc-400">No ${camelName}s yet.</p>
       ) : (
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
           {${camelName}s.map((${camelName}) => (
             <div
               key={${camelName}.id}
               className="flex items-center justify-between py-4"
             >
-              <Link href={\`/${kebabPlural}/\${${camelName}.id}\`} className="font-medium text-gray-900 hover:text-gray-600">
+              <Link href={\`/${kebabPlural}/\${${camelName}.id}\`} className="font-medium text-zinc-900 hover:text-zinc-600 dark:text-zinc-50 dark:hover:text-zinc-300">
                 {${camelName}.${displayField}}
               </Link>
               <div className="flex gap-4 text-sm">
                 <Link
                   href={\`/${kebabPlural}/\${${camelName}.id}/edit\`}
-                  className="text-gray-500 hover:text-gray-900"
+                  className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
                 >
                   Edit
                 </Link>
@@ -119,7 +119,7 @@ export default async function ${pascalPlural}Page() {
                     await delete${pascalName}(${camelName}.id);
                   }}
                 >
-                  <button type="submit" className="text-gray-500 hover:text-red-600">
+                  <button type="submit" className="text-zinc-500 hover:text-red-600 dark:text-zinc-400 dark:hover:text-red-400">
                     Delete
                   </button>
                 </form>
@@ -157,7 +157,7 @@ ${fields.map((f) => `      ${f.name}: ${formDataValue(f)},`).join("\n")}
 
   return (
     <div className="mx-auto max-w-xl px-6 py-12">
-      <h1 className="mb-8 text-2xl font-semibold text-gray-900">New ${pascalName}</h1>
+      <h1 className="mb-8 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">New ${pascalName}</h1>
 
       <form action={handleCreate} className="space-y-5">
 ${fields.map((f) => generateFormField(f, camelName)).join("\n\n")}
@@ -165,13 +165,13 @@ ${fields.map((f) => generateFormField(f, camelName)).join("\n\n")}
         <div className="flex gap-3 pt-4">
           <button
             type="submit"
-            className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800"
+            className="flex h-10 items-center rounded-full bg-zinc-900 px-4 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             Create ${pascalName}
           </button>
           <Link
             href="/${kebabPlural}"
-            className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50"
+            className="flex h-10 items-center rounded-full border border-zinc-200 px-4 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
           >
             Cancel
           </Link>
@@ -220,29 +220,29 @@ export default async function ${pascalName}Page({
   return (
     <div className="mx-auto max-w-xl px-6 py-12">
       <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-gray-900">${pascalName}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">${pascalName}</h1>
         <div className="flex gap-3">
           <Link
             href={\`/${kebabPlural}/\${${camelName}.id}/edit\`}
-            className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800"
+            className="flex h-10 items-center rounded-full bg-zinc-900 px-4 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             Edit
           </Link>
           <Link
             href="/${kebabPlural}"
-            className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50"
+            className="flex h-10 items-center rounded-full border border-zinc-200 px-4 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
           >
             Back
           </Link>
         </div>
       </div>
 
-      <dl className="divide-y divide-gray-100">
+      <dl className="divide-y divide-zinc-100 dark:divide-zinc-800">
 ${fields
       .map(
         (f) => `        <div className="py-3">
-          <dt className="text-sm text-gray-500">${toPascalCase(f.name)}</dt>
-          <dd className="mt-1 text-gray-900">{${camelName}.${f.name}}</dd>
+          <dt className="text-sm text-zinc-500 dark:text-zinc-400">${toPascalCase(f.name)}</dt>
+          <dd className="mt-1 text-zinc-900 dark:text-zinc-50">{${camelName}.${f.name}}</dd>
         </div>`
       )
       .join("\n")}${
@@ -250,8 +250,8 @@ ${fields
       ? ""
       : `
         <div className="py-3">
-          <dt className="text-sm text-gray-500">Created At</dt>
-          <dd className="mt-1 text-gray-900">{${camelName}.createdAt.toLocaleString()}</dd>
+          <dt className="text-sm text-zinc-500 dark:text-zinc-400">Created At</dt>
+          <dd className="mt-1 text-zinc-900 dark:text-zinc-50">{${camelName}.createdAt.toLocaleString()}</dd>
         </div>`
   }
       </dl>
@@ -308,7 +308,7 @@ ${fields.map((f) => `      ${f.name}: ${formDataValue(f)},`).join("\n")}
 
   return (
     <div className="mx-auto max-w-xl px-6 py-12">
-      <h1 className="mb-8 text-2xl font-semibold text-gray-900">Edit ${pascalName}</h1>
+      <h1 className="mb-8 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">Edit ${pascalName}</h1>
 
       <form action={handleUpdate} className="space-y-5">
 ${fields.map((f) => generateFormField(f, camelName, true)).join("\n\n")}
@@ -316,13 +316,13 @@ ${fields.map((f) => generateFormField(f, camelName, true)).join("\n\n")}
         <div className="flex gap-3 pt-4">
           <button
             type="submit"
-            className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800"
+            className="flex h-10 items-center rounded-full bg-zinc-900 px-4 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             Update ${pascalName}
           </button>
           <Link
             href="/${kebabPlural}"
-            className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50"
+            className="flex h-10 items-center rounded-full border border-zinc-200 px-4 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
           >
             Cancel
           </Link>
@@ -347,7 +347,7 @@ function createFieldContext(field: Field, camelName: string, withDefault: boolea
   return {
     field,
     label: toPascalCase(field.name),
-    optionalLabel: field.nullable ? ` <span className="text-gray-400">(optional)</span>` : "",
+    optionalLabel: field.nullable ? ` <span className="text-zinc-400 dark:text-zinc-500">(optional)</span>` : "",
     required: field.nullable ? "" : " required",
     defaultValue: withDefault ? ` defaultValue={${camelName}.${field.name}}` : "",
   };
@@ -358,14 +358,14 @@ function generateTextareaField(ctx: FieldContext): string {
   const rows = field.type === "json" ? 6 : 4;
   const placeholder = field.type === "json" ? ` placeholder="{}"` : "";
   return `        <div>
-          <label htmlFor="${field.name}" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="${field.name}" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             ${label}${optionalLabel}
           </label>
           <textarea
             id="${field.name}"
             name="${field.name}"
             rows={${rows}}
-            className="mt-1.5 block w-full rounded-lg border border-gray-200 px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-0 resize-none"${defaultValue}${placeholder}${required}
+            className="mt-1.5 block w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-400 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-500 dark:focus:border-zinc-500 resize-none"${defaultValue}${placeholder}${required}
           />
         </div>`;
 }
@@ -378,9 +378,9 @@ function generateCheckboxField(ctx: FieldContext, camelName: string, withDefault
             type="checkbox"
             id="${field.name}"
             name="${field.name}"
-            className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-0 focus:ring-offset-0"${defaultChecked}
+            className="h-4 w-4 rounded border-zinc-300 text-zinc-900 focus:ring-0 focus:ring-offset-0 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-50"${defaultChecked}
           />
-          <label htmlFor="${field.name}" className="text-sm font-medium text-gray-700">
+          <label htmlFor="${field.name}" className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
             ${label}
           </label>
         </div>`;
@@ -390,14 +390,14 @@ function generateNumberField(ctx: FieldContext, step?: string): string {
   const { field, label, optionalLabel, required, defaultValue } = ctx;
   const stepAttr = step ? `\n            step="${step}"` : "";
   return `        <div>
-          <label htmlFor="${field.name}" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="${field.name}" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             ${label}${optionalLabel}
           </label>
           <input
             type="number"${stepAttr}
             id="${field.name}"
             name="${field.name}"
-            className="mt-1.5 block w-full rounded-lg border border-gray-200 px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-0"${defaultValue}${required}
+            className="mt-1.5 block w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-400 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-500 dark:focus:border-zinc-500"${defaultValue}${required}
           />
         </div>`;
 }
@@ -408,14 +408,14 @@ function generateDateField(ctx: FieldContext, camelName: string, withDefault: bo
     ? ` defaultValue={${camelName}.${field.name}?.toISOString().split("T")[0]}`
     : "";
   return `        <div>
-          <label htmlFor="${field.name}" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="${field.name}" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             ${label}${optionalLabel}
           </label>
           <input
             type="date"
             id="${field.name}"
             name="${field.name}"
-            className="mt-1.5 block w-full rounded-lg border border-gray-200 px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-0"${dateDefault}${required}
+            className="mt-1.5 block w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-400 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-500 dark:focus:border-zinc-500"${dateDefault}${required}
           />
         </div>`;
 }
@@ -426,14 +426,14 @@ function generateDatetimeField(ctx: FieldContext, camelName: string, withDefault
     ? ` defaultValue={${camelName}.${field.name}?.toISOString().slice(0, 16)}`
     : "";
   return `        <div>
-          <label htmlFor="${field.name}" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="${field.name}" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             ${label}${optionalLabel}
           </label>
           <input
             type="datetime-local"
             id="${field.name}"
             name="${field.name}"
-            className="mt-1.5 block w-full rounded-lg border border-gray-200 px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-0"${dateDefault}${required}
+            className="mt-1.5 block w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-400 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-500 dark:focus:border-zinc-500"${dateDefault}${required}
           />
         </div>`;
 }
@@ -444,13 +444,13 @@ function generateSelectField(ctx: FieldContext): string {
     .map((v) => `            <option value="${escapeString(v)}">${toPascalCase(v)}</option>`)
     .join("\n");
   return `        <div>
-          <label htmlFor="${field.name}" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="${field.name}" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             ${label}${optionalLabel}
           </label>
           <select
             id="${field.name}"
             name="${field.name}"
-            className="mt-1.5 block w-full rounded-lg border border-gray-200 px-3 py-2 text-gray-900 focus:border-gray-400 focus:outline-none focus:ring-0"${defaultValue}${required}
+            className="mt-1.5 block w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-zinc-900 focus:border-zinc-400 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-500"${defaultValue}${required}
           >
 ${options}
           </select>
@@ -460,14 +460,14 @@ ${options}
 function generateTextField(ctx: FieldContext): string {
   const { field, label, optionalLabel, required, defaultValue } = ctx;
   return `        <div>
-          <label htmlFor="${field.name}" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="${field.name}" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             ${label}${optionalLabel}
           </label>
           <input
             type="text"
             id="${field.name}"
             name="${field.name}"
-            className="mt-1.5 block w-full rounded-lg border border-gray-200 px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-0"${defaultValue}${required}
+            className="mt-1.5 block w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-400 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-500 dark:focus:border-zinc-500"${defaultValue}${required}
           />
         </div>`;
 }
