@@ -37,28 +37,25 @@ describe("destroy generators", () => {
     it("deletes scaffold directory", async () => {
       await destroyScaffold("post");
 
-      expect(fs.rmSync).toHaveBeenCalledWith(
-        path.join(mockCwd, "app", "posts"),
-        { recursive: true }
-      );
+      expect(fs.rmSync).toHaveBeenCalledWith(path.join(mockCwd, "app", "posts"), {
+        recursive: true,
+      });
     });
 
     it("uses kebab-case for directory name", async () => {
       await destroyScaffold("blogPost");
 
-      expect(fs.rmSync).toHaveBeenCalledWith(
-        path.join(mockCwd, "app", "blog-posts"),
-        { recursive: true }
-      );
+      expect(fs.rmSync).toHaveBeenCalledWith(path.join(mockCwd, "app", "blog-posts"), {
+        recursive: true,
+      });
     });
 
     it("handles plural model names", async () => {
       await destroyScaffold("users");
 
-      expect(fs.rmSync).toHaveBeenCalledWith(
-        path.join(mockCwd, "app", "users"),
-        { recursive: true }
-      );
+      expect(fs.rmSync).toHaveBeenCalledWith(path.join(mockCwd, "app", "users"), {
+        recursive: true,
+      });
     });
 
     it("does not delete in dry run mode", async () => {
@@ -80,19 +77,17 @@ describe("destroy generators", () => {
     it("deletes resource directory", async () => {
       await destroyResource("post");
 
-      expect(fs.rmSync).toHaveBeenCalledWith(
-        path.join(mockCwd, "app", "posts"),
-        { recursive: true }
-      );
+      expect(fs.rmSync).toHaveBeenCalledWith(path.join(mockCwd, "app", "posts"), {
+        recursive: true,
+      });
     });
 
     it("uses kebab-case for directory name", async () => {
       await destroyResource("blogPost");
 
-      expect(fs.rmSync).toHaveBeenCalledWith(
-        path.join(mockCwd, "app", "blog-posts"),
-        { recursive: true }
-      );
+      expect(fs.rmSync).toHaveBeenCalledWith(path.join(mockCwd, "app", "blog-posts"), {
+        recursive: true,
+      });
     });
 
     it("does not delete in dry run mode", async () => {
@@ -110,19 +105,17 @@ describe("destroy generators", () => {
     it("deletes API directory", async () => {
       await destroyApi("post");
 
-      expect(fs.rmSync).toHaveBeenCalledWith(
-        path.join(mockCwd, "app", "api", "posts"),
-        { recursive: true }
-      );
+      expect(fs.rmSync).toHaveBeenCalledWith(path.join(mockCwd, "app", "api", "posts"), {
+        recursive: true,
+      });
     });
 
     it("uses kebab-case for directory name", async () => {
       await destroyApi("blogPost");
 
-      expect(fs.rmSync).toHaveBeenCalledWith(
-        path.join(mockCwd, "app", "api", "blog-posts"),
-        { recursive: true }
-      );
+      expect(fs.rmSync).toHaveBeenCalledWith(path.join(mockCwd, "app", "api", "blog-posts"), {
+        recursive: true,
+      });
     });
 
     it("does not delete in dry run mode", async () => {

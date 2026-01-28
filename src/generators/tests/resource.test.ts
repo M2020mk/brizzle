@@ -25,11 +25,7 @@ describe("generateResource", () => {
     it("calls generateModel with correct arguments", () => {
       generateResource("post", ["title:string", "body:text"]);
 
-      expect(generateModel).toHaveBeenCalledWith(
-        "post",
-        ["title:string", "body:text"],
-        {}
-      );
+      expect(generateModel).toHaveBeenCalledWith("post", ["title:string", "body:text"], {});
     });
 
     it("calls generateActions with correct arguments", () => {
@@ -41,11 +37,10 @@ describe("generateResource", () => {
     it("passes options to generateModel", () => {
       generateResource("post", ["title:string"], { uuid: true, noTimestamps: true });
 
-      expect(generateModel).toHaveBeenCalledWith(
-        "post",
-        ["title:string"],
-        { uuid: true, noTimestamps: true }
-      );
+      expect(generateModel).toHaveBeenCalledWith("post", ["title:string"], {
+        uuid: true,
+        noTimestamps: true,
+      });
     });
 
     it("passes options to generateActions", () => {
@@ -59,22 +54,14 @@ describe("generateResource", () => {
     it("uses singular name for model and actions", () => {
       generateResource("posts", ["title:string"]);
 
-      expect(generateModel).toHaveBeenCalledWith(
-        "post",
-        ["title:string"],
-        {}
-      );
+      expect(generateModel).toHaveBeenCalledWith("post", ["title:string"], {});
       expect(generateActions).toHaveBeenCalledWith("post", {});
     });
 
     it("handles PascalCase names", () => {
       generateResource("BlogPost", ["title:string"]);
 
-      expect(generateModel).toHaveBeenCalledWith(
-        "BlogPost",
-        ["title:string"],
-        {}
-      );
+      expect(generateModel).toHaveBeenCalledWith("BlogPost", ["title:string"], {});
       expect(generateActions).toHaveBeenCalledWith("BlogPost", {});
     });
   });
@@ -101,11 +88,7 @@ describe("generateResource", () => {
     it("propagates dryRun option to sub-generators", () => {
       generateResource("post", ["title:string"], { dryRun: true });
 
-      expect(generateModel).toHaveBeenCalledWith(
-        "post",
-        ["title:string"],
-        { dryRun: true }
-      );
+      expect(generateModel).toHaveBeenCalledWith("post", ["title:string"], { dryRun: true });
       expect(generateActions).toHaveBeenCalledWith("post", { dryRun: true });
     });
   });

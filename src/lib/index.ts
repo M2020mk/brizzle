@@ -1,5 +1,12 @@
 // Types
-export type { Field, GeneratorOptions, ModelContext, ProjectConfig, Dialect } from "./types";
+export type {
+  Field,
+  GeneratorOptions,
+  ModelContext,
+  ProjectConfig,
+  Dialect,
+  DestroyType,
+} from "./types";
 export { VALID_FIELD_TYPES } from "./types";
 
 // Config
@@ -29,7 +36,7 @@ export {
 } from "./strings";
 
 // Validation
-export { validateModelName, validateFieldDefinition } from "./validation";
+export { validateModelName, validateFieldDefinition, validateReferences } from "./validation";
 
 // Parsing
 export { parseFields } from "./parsing";
@@ -44,7 +51,7 @@ export {
   getRequiredImports,
   extractImportsFromSchema,
   updateSchemaImports,
-} from "./drizzle";
+} from "./drizzle/index";
 
 // Files
 export {
@@ -55,3 +62,6 @@ export {
   modelExistsInSchema,
   removeModelFromSchemaContent,
 } from "./files";
+
+// Forms
+export { generateFormField, formDataValue, createFieldContext, type FieldContext } from "./forms";

@@ -1,14 +1,21 @@
 import * as fs from "fs";
 import * as path from "path";
 import type { Dialect, ProjectConfig } from "./types";
+import { log } from "./logger";
 
 let cachedProjectConfig: ProjectConfig | null = null;
 
+/**
+ * Detects the database dialect from drizzle.config.ts.
+ *
+ * @returns The detected dialect (defaults to "sqlite" if not found)
+ */
 export function detectDialect(): Dialect {
   const configPath = path.join(process.cwd(), "drizzle.config.ts");
 
   if (!fs.existsSync(configPath)) {
-    return "sqlite"; // default
+    log.warn("drizzle.config.ts not found, defaulting to sqlite dialect");
+    return "sqlite";
   }
 
   const content = fs.readFileSync(configPath, "utf-8");
@@ -30,6 +37,19 @@ export function detectDialect(): Dialect {
   return "sqlite";
 }
 
+/**
+ * Detects the project configuration by examining the file structure.
+ *
+ * Auto-detects:
+ * - Whether the project uses a src/ directory
+ * - Path alias from tsconfig.json (e.g., "@", "~")
+ * - Database directory location (db/, lib/db/, server/db/)
+ * - App directory location
+ *
+ * Results are cached for performance.
+ *
+ * @returns ProjectConfig object with detected settings
+ */
 export function detectProjectConfig(): ProjectConfig {
   if (cachedProjectConfig) {
     return cachedProjectConfig;

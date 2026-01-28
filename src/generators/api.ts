@@ -11,7 +11,24 @@ import {
   GeneratorOptions,
 } from "../lib";
 
-export function generateApi(name: string, fieldArgs: string[], options: GeneratorOptions = {}): void {
+/**
+ * Generates REST API route handlers for a model.
+ *
+ * Creates the schema model and Next.js API routes with GET, POST, PATCH, and DELETE handlers.
+ * The routes follow REST conventions: /api/[resource] for collection and /api/[resource]/[id] for member.
+ *
+ * @param name - Model name (singular, e.g., "product")
+ * @param fieldArgs - Array of field definitions (e.g., ["name:string", "price:float"])
+ * @param options - Generation options (force, dryRun, uuid, noTimestamps)
+ * @throws {Error} If model name is invalid or reserved
+ * @example
+ * generateApi("product", ["name:string", "price:float"], { uuid: true });
+ */
+export function generateApi(
+  name: string,
+  fieldArgs: string[],
+  options: GeneratorOptions = {}
+): void {
   validateModelName(name);
 
   const ctx = createModelContext(name);
@@ -92,7 +109,11 @@ export async function POST(request: Request) {
 `;
 }
 
-function generateMemberRoute(camelPlural: string, kebabPlural: string, options: GeneratorOptions = {}): string {
+function generateMemberRoute(
+  camelPlural: string,
+  kebabPlural: string,
+  options: GeneratorOptions = {}
+): string {
   const dbImport = getDbImport();
   const schemaImport = getSchemaImport();
 

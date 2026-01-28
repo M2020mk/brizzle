@@ -134,7 +134,9 @@ describe("generateApi", () => {
 
       const content = getWrittenFile("[id]/route.ts");
 
-      expect(content).toContain("export async function PATCH(request: Request, { params }: Params)");
+      expect(content).toContain(
+        "export async function PATCH(request: Request, { params }: Params)"
+      );
       expect(content).toContain(".update(posts)");
       expect(content).toContain("updatedAt: new Date()");
       expect(content).toContain(".returning()");
@@ -145,7 +147,9 @@ describe("generateApi", () => {
 
       const content = getWrittenFile("[id]/route.ts");
 
-      expect(content).toContain("export async function DELETE(request: Request, { params }: Params)");
+      expect(content).toContain(
+        "export async function DELETE(request: Request, { params }: Params)"
+      );
       expect(content).toContain("db.delete(posts).where(eq(posts.id, numericId))");
       expect(content).toContain("status: 204");
     });

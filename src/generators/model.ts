@@ -10,6 +10,7 @@ import {
   fileExists,
   readFile,
   validateModelName,
+  validateReferences,
   createModelContext,
   modelExistsInSchema,
   removeModelFromSchemaContent,
@@ -26,12 +27,33 @@ import {
   Dialect,
 } from "../lib";
 
-export function generateModel(name: string, fieldArgs: string[], options: GeneratorOptions = {}): void {
+/**
+ * Generates a Drizzle schema model definition.
+ *
+ * Creates or updates the schema.ts file with a new table definition
+ * including fields, primary key, and timestamps.
+ *
+ * @param name - Model name (singular, e.g., "post")
+ * @param fieldArgs - Array of field definitions (e.g., ["title:string", "body:text"])
+ * @param options - Generation options (force, dryRun, uuid, noTimestamps)
+ * @throws {Error} If model name is invalid or reserved
+ * @throws {Error} If model already exists and --force is not specified
+ * @example
+ * generateModel("post", ["title:string", "body:text"], { uuid: true });
+ */
+export function generateModel(
+  name: string,
+  fieldArgs: string[],
+  options: GeneratorOptions = {}
+): void {
   validateModelName(name);
 
   const ctx = createModelContext(name);
   const fields = parseFields(fieldArgs);
   const dialect = detectDialect();
+
+  // Warn about references to non-existent models
+  validateReferences(fields);
 
   // Check for duplicate model
   if (modelExistsInSchema(ctx.tableName) && !options.force) {
@@ -43,7 +65,13 @@ export function generateModel(name: string, fieldArgs: string[], options: Genera
   const schemaPath = path.join(getDbPath(), "schema.ts");
 
   if (!fileExists(schemaPath)) {
-    const schemaContent = generateSchemaContent(ctx.camelPlural, ctx.tableName, fields, dialect, options);
+    const schemaContent = generateSchemaContent(
+      ctx.camelPlural,
+      ctx.tableName,
+      fields,
+      dialect,
+      options
+    );
     writeFile(schemaPath, schemaContent, options);
   } else if (modelExistsInSchema(ctx.tableName)) {
     // Model exists and --force was used — replace it
@@ -116,7 +144,11 @@ ${lines.join("\n")}
 });`;
 }
 
-function generateFieldDefinitions(fields: Field[], dialect: Dialect, options: GeneratorOptions = {}): string {
+function generateFieldDefinitions(
+  fields: Field[],
+  dialect: Dialect,
+  options: GeneratorOptions = {}
+): string {
   return fields
     .map((field) => {
       const columnName = toSnakeCase(field.name);
@@ -195,15 +227,17 @@ function generateEnumField(field: Field, columnName: string, dialect: Dialect): 
       // PostgreSQL uses pgEnum reference
       return `  ${field.name}: ${field.name}Enum("${columnName}")${modifiers},`;
 
-    case "mysql":
+    case "mysql": {
       // MySQL uses inline mysqlEnum
       const mysqlValues = values.map((v) => `"${escapeString(v)}"`).join(", ");
       return `  ${field.name}: mysqlEnum("${columnName}", [${mysqlValues}])${modifiers},`;
+    }
 
-    default:
+    default: {
       // SQLite uses text with enum option
       const sqliteValues = values.map((v) => `"${escapeString(v)}"`).join(", ");
       return `  ${field.name}: text("${columnName}", { enum: [${sqliteValues}] })${modifiers},`;
+    }
   }
 }
 
@@ -239,7 +273,8 @@ function replaceInSchema(
   const updatedContent = updateSchemaImports(cleanedContent, newImports, dialect);
   const enumDefinitions = generateEnumDefinitions(fields, dialect);
   const tableDefinition = generateTableDefinition(modelName, tableName, fields, dialect, options);
-  const newContent = updatedContent.trimEnd() + "\n" + enumDefinitions + "\n" + tableDefinition + "\n";
+  const newContent =
+    updatedContent.trimEnd() + "\n" + enumDefinitions + "\n" + tableDefinition + "\n";
 
   writeFile(schemaPath, newContent, { force: true, dryRun: options.dryRun });
 }

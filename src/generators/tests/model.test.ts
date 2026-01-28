@@ -89,7 +89,9 @@ describe("generateModel", () => {
       const writeCall = vi.mocked(fs.writeFileSync).mock.calls[0];
       const content = writeCall[1] as string;
 
-      expect(content).toContain('id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID())');
+      expect(content).toContain(
+        'id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID())'
+      );
     });
   });
 
@@ -181,12 +183,18 @@ describe("generateModel", () => {
       const writeCall = vi.mocked(fs.writeFileSync).mock.calls[0];
       const content = writeCall[1] as string;
 
-      expect(content).toContain('status: text("status", { enum: ["draft", "published", "archived"] })');
+      expect(content).toContain(
+        'status: text("status", { enum: ["draft", "published", "archived"] })'
+      );
     });
 
     it("rejects enum values with invalid characters", () => {
-      expect(() => generateModel("post", ['status:enum:draft,say "hi",published'])).toThrow("Invalid enum value");
-      expect(() => generateModel("post", ["status:enum:draft,foo bar"])).toThrow("Invalid enum value");
+      expect(() => generateModel("post", ['status:enum:draft,say "hi",published'])).toThrow(
+        "Invalid enum value"
+      );
+      expect(() => generateModel("post", ["status:enum:draft,foo bar"])).toThrow(
+        "Invalid enum value"
+      );
     });
   });
 

@@ -49,12 +49,54 @@ describe("getIdColumn", () => {
 });
 
 describe("drizzleType", () => {
-  const stringField = { name: "name", type: "string", isReference: false, isEnum: false, nullable: false, unique: false };
-  const intField = { name: "age", type: "integer", isReference: false, isEnum: false, nullable: false, unique: false };
-  const boolField = { name: "active", type: "boolean", isReference: false, isEnum: false, nullable: false, unique: false };
-  const floatField = { name: "price", type: "float", isReference: false, isEnum: false, nullable: false, unique: false };
-  const jsonField = { name: "data", type: "json", isReference: false, isEnum: false, nullable: false, unique: false };
-  const uuidField = { name: "token", type: "uuid", isReference: false, isEnum: false, nullable: false, unique: false };
+  const stringField = {
+    name: "name",
+    type: "string",
+    isReference: false,
+    isEnum: false,
+    nullable: false,
+    unique: false,
+  };
+  const intField = {
+    name: "age",
+    type: "integer",
+    isReference: false,
+    isEnum: false,
+    nullable: false,
+    unique: false,
+  };
+  const boolField = {
+    name: "active",
+    type: "boolean",
+    isReference: false,
+    isEnum: false,
+    nullable: false,
+    unique: false,
+  };
+  const floatField = {
+    name: "price",
+    type: "float",
+    isReference: false,
+    isEnum: false,
+    nullable: false,
+    unique: false,
+  };
+  const jsonField = {
+    name: "data",
+    type: "json",
+    isReference: false,
+    isEnum: false,
+    nullable: false,
+    unique: false,
+  };
+  const uuidField = {
+    name: "token",
+    type: "uuid",
+    isReference: false,
+    isEnum: false,
+    nullable: false,
+    unique: false,
+  };
 
   describe("sqlite", () => {
     it("maps types correctly", () => {

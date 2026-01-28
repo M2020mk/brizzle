@@ -6,7 +6,7 @@ import { generateScaffold } from "./generators/scaffold";
 import { generateResource } from "./generators/resource";
 import { generateApi } from "./generators/api";
 import { destroyScaffold, destroyResource, destroyApi } from "./generators/destroy";
-import { log, detectProjectConfig, detectDialect } from "./lib";
+import { log, detectProjectConfig, detectDialect, GeneratorOptions, DestroyType } from "./lib";
 
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json");
@@ -20,20 +20,15 @@ function handleError(error: unknown): void {
   process.exit(1);
 }
 
-program
-  .name("brizzle")
-  .description("Rails-like generators for Next.js + Drizzle")
-  .version(version);
+program.name("brizzle").description("Rails-like generators for Next.js + Drizzle").version(version);
 
 // ============================================================================
 // Generate commands
 // ============================================================================
 
-interface CommandOptions {
-  force?: boolean;
-  dryRun?: boolean;
-  uuid?: boolean;
-  timestamps?: boolean; // --no-timestamps sets this to false
+// Commander's --no-timestamps flag sets timestamps to false
+interface CommanderOptions extends GeneratorOptions {
+  timestamps?: boolean;
 }
 
 program
@@ -52,7 +47,7 @@ program
   .option("-n, --dry-run", "Preview changes without writing files")
   .option("-u, --uuid", "Use UUID for primary key instead of auto-increment")
   .option("--no-timestamps", "Skip createdAt/updatedAt fields")
-  .action((name: string, fields: string[], opts: CommandOptions) => {
+  .action((name: string, fields: string[], opts: CommanderOptions) => {
     try {
       generateModel(name, fields, {
         ...opts,
@@ -74,7 +69,7 @@ program
   )
   .option("-f, --force", "Overwrite existing files")
   .option("-n, --dry-run", "Preview changes without writing files")
-  .action((name: string, opts: CommandOptions) => {
+  .action((name: string, opts: CommanderOptions) => {
     try {
       generateActions(name, opts);
     } catch (error) {
@@ -95,7 +90,7 @@ program
   .option("-n, --dry-run", "Preview changes without writing files")
   .option("-u, --uuid", "Use UUID for primary key instead of auto-increment")
   .option("--no-timestamps", "Skip createdAt/updatedAt fields")
-  .action((name: string, fields: string[], opts: CommandOptions) => {
+  .action((name: string, fields: string[], opts: CommanderOptions) => {
     try {
       generateResource(name, fields, {
         ...opts,
@@ -120,7 +115,7 @@ program
   .option("-n, --dry-run", "Preview changes without writing files")
   .option("-u, --uuid", "Use UUID for primary key instead of auto-increment")
   .option("--no-timestamps", "Skip createdAt/updatedAt fields")
-  .action((name: string, fields: string[], opts: CommandOptions) => {
+  .action((name: string, fields: string[], opts: CommanderOptions) => {
     try {
       generateScaffold(name, fields, {
         ...opts,
@@ -144,7 +139,7 @@ program
   .option("-n, --dry-run", "Preview changes without writing files")
   .option("-u, --uuid", "Use UUID for primary key instead of auto-increment")
   .option("--no-timestamps", "Skip createdAt/updatedAt fields")
-  .action((name: string, fields: string[], opts: CommandOptions) => {
+  .action((name: string, fields: string[], opts: CommanderOptions) => {
     try {
       generateApi(name, fields, {
         ...opts,
@@ -171,9 +166,15 @@ program
   )
   .option("-f, --force", "Skip confirmation prompt")
   .option("-n, --dry-run", "Preview changes without deleting files")
-  .action(async (type: string, name: string, opts: CommandOptions) => {
+  .action(async (type: string, name: string, opts: CommanderOptions) => {
     try {
-      switch (type) {
+      const validTypes: DestroyType[] = ["scaffold", "resource", "api"];
+      if (!validTypes.includes(type as DestroyType)) {
+        throw new Error(`Unknown type "${type}". Use: scaffold, resource, or api`);
+      }
+
+      const destroyType = type as DestroyType;
+      switch (destroyType) {
         case "scaffold":
           await destroyScaffold(name, opts);
           break;
@@ -183,8 +184,6 @@ program
         case "api":
           await destroyApi(name, opts);
           break;
-        default:
-          throw new Error(`Unknown type "${type}". Use: scaffold, resource, or api`);
       }
     } catch (error) {
       handleError(error);
@@ -203,7 +202,9 @@ program
     const dialect = detectDialect();
 
     console.log("\nDetected project configuration:\n");
-    console.log(`  Project structure:  ${config.useSrc ? "src/ (e.g., src/app/, src/db/)" : "root (e.g., app/, db/)"}`);
+    console.log(
+      `  Project structure:  ${config.useSrc ? "src/ (e.g., src/app/, src/db/)" : "root (e.g., app/, db/)"}`
+    );
     console.log(`  Path alias:         ${config.alias}/`);
     console.log(`  App directory:      ${config.appPath}/`);
     console.log(`  DB directory:       ${config.dbPath}/`);

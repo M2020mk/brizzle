@@ -382,7 +382,9 @@ describe("generateScaffold", () => {
 
       const newPage = getWrittenFile("products/new/page.tsx");
 
-      expect(newPage).toContain('discount: formData.get("discount") ? formData.get("discount") as string : null');
+      expect(newPage).toContain(
+        'discount: formData.get("discount") ? formData.get("discount") as string : null'
+      );
     });
   });
 

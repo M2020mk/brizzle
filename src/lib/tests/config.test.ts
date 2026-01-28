@@ -3,12 +3,7 @@ import * as fs from "fs";
 
 vi.mock("fs");
 
-import {
-  detectProjectConfig,
-  getDbImport,
-  getSchemaImport,
-  resetProjectConfig,
-} from "..";
+import { detectProjectConfig, getDbImport, getSchemaImport, resetProjectConfig } from "..";
 
 describe("detectProjectConfig", () => {
   const mockCwd = "/test/project";
@@ -62,13 +57,15 @@ describe("detectProjectConfig", () => {
       if (pathStr.endsWith("/db")) return true;
       return false;
     });
-    vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
-      compilerOptions: {
-        paths: {
-          "@/*": ["./src/*"]
-        }
-      }
-    }));
+    vi.mocked(fs.readFileSync).mockReturnValue(
+      JSON.stringify({
+        compilerOptions: {
+          paths: {
+            "@/*": ["./src/*"],
+          },
+        },
+      })
+    );
 
     const config = detectProjectConfig();
 
@@ -82,13 +79,15 @@ describe("detectProjectConfig", () => {
       if (pathStr.endsWith("/db")) return true;
       return false;
     });
-    vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
-      compilerOptions: {
-        paths: {
-          "~/*": ["./src/*"]
-        }
-      }
-    }));
+    vi.mocked(fs.readFileSync).mockReturnValue(
+      JSON.stringify({
+        compilerOptions: {
+          paths: {
+            "~/*": ["./src/*"],
+          },
+        },
+      })
+    );
 
     const config = detectProjectConfig();
 
@@ -102,9 +101,11 @@ describe("detectProjectConfig", () => {
       if (pathStr.endsWith("/db")) return true;
       return false;
     });
-    vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
-      compilerOptions: {}
-    }));
+    vi.mocked(fs.readFileSync).mockReturnValue(
+      JSON.stringify({
+        compilerOptions: {},
+      })
+    );
 
     const config = detectProjectConfig();
 
@@ -171,11 +172,13 @@ describe("getDbImport", () => {
       if (pathStr.endsWith("/db")) return true;
       return false;
     });
-    vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({
-      compilerOptions: {
-        paths: { "~/*": ["./src/*"] }
-      }
-    }));
+    vi.mocked(fs.readFileSync).mockReturnValue(
+      JSON.stringify({
+        compilerOptions: {
+          paths: { "~/*": ["./src/*"] },
+        },
+      })
+    );
 
     expect(getDbImport()).toBe("~/db");
   });

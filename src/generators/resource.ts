@@ -1,13 +1,25 @@
 import { generateModel } from "./model";
 import { generateActions } from "./actions";
-import {
-  validateModelName,
-  createModelContext,
-  log,
-  GeneratorOptions,
-} from "../lib";
+import { validateModelName, createModelContext, log, GeneratorOptions } from "../lib";
 
-export function generateResource(name: string, fieldArgs: string[], options: GeneratorOptions = {}): void {
+/**
+ * Generates a resource (model + actions) without UI pages.
+ *
+ * Creates the schema model and server actions, but no page components.
+ * Useful for API-only resources or when building custom UIs.
+ *
+ * @param name - Model name (singular, e.g., "session")
+ * @param fieldArgs - Array of field definitions (e.g., ["token:uuid", "userId:references:user"])
+ * @param options - Generation options (force, dryRun, uuid, noTimestamps)
+ * @throws {Error} If model name is invalid or reserved
+ * @example
+ * generateResource("session", ["token:uuid", "userId:references:user"], { uuid: true });
+ */
+export function generateResource(
+  name: string,
+  fieldArgs: string[],
+  options: GeneratorOptions = {}
+): void {
   validateModelName(name);
 
   const ctx = createModelContext(name);

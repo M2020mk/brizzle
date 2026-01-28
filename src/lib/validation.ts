@@ -1,20 +1,103 @@
-import { VALID_FIELD_TYPES } from "./types";
+import { VALID_FIELD_TYPES, type Field } from "./types";
+import { log } from "./logger";
+import { fileExists, readFile } from "./files";
+import { getDbPath } from "./config";
+import { pluralize, toSnakeCase } from "./strings";
+import * as path from "path";
 
 // SQL reserved words that could cause issues when used as column names
 const SQL_RESERVED_WORDS = [
   // SQL keywords
-  "select", "from", "where", "insert", "update", "delete", "drop", "create",
-  "alter", "index", "table", "column", "database", "schema", "and", "or",
-  "not", "null", "true", "false", "order", "by", "group", "having", "limit",
-  "offset", "join", "left", "right", "inner", "outer", "on", "as", "in",
-  "between", "like", "is", "case", "when", "then", "else", "end", "exists",
-  "distinct", "all", "any", "union", "intersect", "except", "primary",
-  "foreign", "key", "references", "unique", "default", "check", "constraint",
+  "select",
+  "from",
+  "where",
+  "insert",
+  "update",
+  "delete",
+  "drop",
+  "create",
+  "alter",
+  "index",
+  "table",
+  "column",
+  "database",
+  "schema",
+  "and",
+  "or",
+  "not",
+  "null",
+  "true",
+  "false",
+  "order",
+  "by",
+  "group",
+  "having",
+  "limit",
+  "offset",
+  "join",
+  "left",
+  "right",
+  "inner",
+  "outer",
+  "on",
+  "as",
+  "in",
+  "between",
+  "like",
+  "is",
+  "case",
+  "when",
+  "then",
+  "else",
+  "end",
+  "exists",
+  "distinct",
+  "all",
+  "any",
+  "union",
+  "intersect",
+  "except",
+  "primary",
+  "foreign",
+  "key",
+  "references",
+  "unique",
+  "default",
+  "check",
+  "constraint",
   // Common type names that might conflict
-  "int", "integer", "float", "double", "decimal", "numeric", "boolean",
-  "bool", "text", "varchar", "char", "date", "time", "timestamp", "datetime",
+  "int",
+  "integer",
+  "float",
+  "double",
+  "decimal",
+  "numeric",
+  "boolean",
+  "bool",
+  "text",
+  "varchar",
+  "char",
+  "date",
+  "time",
+  "timestamp",
+  "datetime",
 ];
 
+/**
+ * Validates a model name for use in code generation.
+ *
+ * Model names must:
+ * - Start with a letter
+ * - Contain only letters and numbers
+ * - Not be a reserved word (model, schema, db, database, table)
+ *
+ * @param name - The model name to validate
+ * @throws {Error} If name is empty, invalid format, or reserved
+ * @example
+ * validateModelName("Post") // OK
+ * validateModelName("123") // Error: Must start with a letter
+ * validateModelName("table") // Error: Reserved word
+ */
 export function validateModelName(name: string): void {
   if (!name) {
     throw new Error("Model name is required");
@@ -30,6 +113,24 @@ export function validateModelName(name: string): void {
   }
 }
 
+/**
+ * Validates a field definition string.
+ *
+ * Field names must:
+ * - Start with a lowercase letter (camelCase)
+ * - Contain only letters and numbers
+ * - Not be a SQL reserved word
+ *
+ * Field types must be one of the valid types or special types (enum, references).
+ * Enum fields must have comma-separated values.
+ *
+ * @param fieldDef - The field definition string (e.g., "title:string", "status:enum:draft,published")
+ * @throws {Error} If field definition is invalid
+ * @example
+ * validateFieldDefinition("title:string") // OK
+ * validateFieldDefinition("Status:string") // Error: Must be camelCase
+ * validateFieldDefinition("select:string") // Error: SQL reserved word
+ */
 export function validateFieldDefinition(fieldDef: string): void {
   const parts = fieldDef.split(":");
   let name = parts[0];
@@ -76,9 +177,7 @@ export function validateFieldDefinition(fieldDef: string): void {
 
     for (const value of values) {
       if (!value) {
-        throw new Error(
-          `Enum field "${name}" has an empty value. Values must not be empty.`
-        );
+        throw new Error(`Enum field "${name}" has an empty value. Values must not be empty.`);
       }
       if (!/^[a-zA-Z][a-zA-Z0-9_-]*$/.test(value)) {
         throw new Error(
@@ -89,9 +188,37 @@ export function validateFieldDefinition(fieldDef: string): void {
 
     const unique = new Set(values);
     if (unique.size !== values.length) {
-      throw new Error(
-        `Enum field "${name}" has duplicate values.`
-      );
+      throw new Error(`Enum field "${name}" has duplicate values.`);
+    }
+  }
+}
+
+/**
+ * Validates that referenced models exist in the schema.
+ * Emits warnings for references to non-existent models.
+ *
+ * @param fields - Array of parsed field definitions
+ */
+export function validateReferences(fields: Field[]): void {
+  const schemaPath = path.join(getDbPath(), "schema.ts");
+
+  if (!fileExists(schemaPath)) {
+    // No schema yet, can't validate references
+    return;
+  }
+
+  const schemaContent = readFile(schemaPath);
+
+  for (const field of fields) {
+    if (field.isReference && field.referenceTo) {
+      const tableName = toSnakeCase(pluralize(field.referenceTo));
+      // Check if the table exists in the schema
+      if (!schemaContent.includes(`"${tableName}"`)) {
+        log.warn(
+          `Referenced model "${field.referenceTo}" (table "${tableName}") not found in schema. ` +
+            `Make sure to create it before running migrations.`
+        );
+      }
     }
   }
 }

@@ -10,16 +10,24 @@ import {
   ModelContext,
 } from "../lib";
 
+/**
+ * Generates Next.js server actions for CRUD operations on a model.
+ *
+ * Creates an actions.ts file with getMany, getOne, create, update, and delete functions.
+ * Uses Drizzle ORM for database operations and Next.js cache revalidation.
+ *
+ * @param name - Model name (singular, e.g., "post")
+ * @param options - Generation options (force, dryRun, uuid)
+ * @throws {Error} If model name is invalid or reserved
+ * @example
+ * generateActions("post", { uuid: true });
+ */
 export function generateActions(name: string, options: GeneratorOptions = {}): void {
   validateModelName(name);
 
   const ctx = createModelContext(name);
 
-  const actionsPath = path.join(
-    getAppPath(),
-    ctx.kebabPlural,
-    "actions.ts"
-  );
+  const actionsPath = path.join(getAppPath(), ctx.kebabPlural, "actions.ts");
 
   const content = generateActionsContent(ctx, options);
   writeFile(actionsPath, content, options);

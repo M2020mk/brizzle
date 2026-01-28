@@ -89,7 +89,9 @@ describe("validateFieldDefinition", () => {
   });
 
   it("rejects duplicate enum values", () => {
-    expect(() => validateFieldDefinition("status:enum:draft,draft,published")).toThrow("duplicate values");
+    expect(() => validateFieldDefinition("status:enum:draft,draft,published")).toThrow(
+      "duplicate values"
+    );
   });
 
   it("rejects SQL reserved words as field names", () => {
@@ -101,6 +103,8 @@ describe("validateFieldDefinition", () => {
   });
 
   it("suggests alternative names for reserved words", () => {
-    expect(() => validateFieldDefinition("order:integer")).toThrow('Consider renaming to "orderValue" or "orderField"');
+    expect(() => validateFieldDefinition("order:integer")).toThrow(
+      'Consider renaming to "orderValue" or "orderField"'
+    );
   });
 });

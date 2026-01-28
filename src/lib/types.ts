@@ -44,6 +44,8 @@ export interface ProjectConfig {
 
 export type Dialect = "sqlite" | "postgresql" | "mysql";
 
+export type DestroyType = "scaffold" | "resource" | "api";
+
 export const VALID_FIELD_TYPES = [
   "string",
   "text",
